@@ -1,0 +1,9 @@
+package main
+import "fmt"
+func main
+{
+  var a=map[string]string{"Name":"Saran","Place":"Bangalore"}
+  var b=map[string]int{"age":21}
+fmt.Printf("a\t%d\n",a)
+fmt.Printf("b\t%d\n",b)
+}
