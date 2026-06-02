@@ -1,0 +1,26 @@
+package main
+
+import "fmt"
+
+type members struct {
+	name string
+	age  int
+	job  string
+}
+
+func main() {
+	var mem1 members
+	var mem2 members
+	mem1.name = "Saran"
+	mem1.age = 21
+	mem1.job = "Intern"
+	mem2.name = "Ramesh"
+	mem2.age = 45
+	mem2.job = "Professor"
+	fmt.Println("Name:", mem1.name)
+	fmt.println("Age:", mem1.age)
+	fmt.Println("Job:", mem1.job)
+	fmt.println("Name:", mem2.name)
+	fmt.Println("age:", mem2.age)
+	fmt.Println("Job:", mem2.job)
+}
