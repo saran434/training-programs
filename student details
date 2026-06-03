@@ -1,0 +1,83 @@
+ main
+
+import "fmt"
+
+type studentlist struct {
+	name    string
+	class   int
+	section char
+}
+
+func studentlist() {
+	var stu1 studentlist
+	stu1.name = "Saran"
+	stu1.class = 12
+	stu1.section = "a"
+
+}
+func addstudent() {
+	var student []studentlist
+	student.name = "Sam"
+	student.class = 11
+	student.section = "b"
+	studentlist = append(student ,studentlist)
+}
+func liststudent(){
+	for_, s=range student{
+		fmt.Println("name:",s.name)
+		fmt.Println("class:",s.class)
+		fmt.Println("section:",s.section)
+
+	}
+}
+func searchstudent(){
+	var name string
+	if s.name=name{
+		fmt.Println("name:",s.name)
+		fmt.Println("class:",s.class)
+		fmt.Println("section:",s.section)
+	}
+}
+func deletestudent(){
+	var name string
+	fmt.Println("enter name:")
+	fmt.Scanf(&name)
+	for i,s=range student{
+		if s.name=name{
+			student = append(student[:i],student[i+1:])
+			fmt.Println("student deleted from the list")
+		}
+	}
+		
+	}
+
+func main(){
+	for {
+		
+		fmt.Println("1.Add")
+		fmt.Println("2.list")
+		fmt.Println("3.search")
+		fmt.Println("delete")
+
+		var choice int
+		fmt.Println("enter the choice:")
+		fmt.Scanf(&choice)
+
+	
+	switch choice {
+	case 1:
+		addstudent()
+	case 2:
+		liststudent()
+	case 3:
+	    searchstudent()
+	case 4:
+		deletestudent()
+		
+	
+default:
+	fmt.Println("Invalid choice")
+	}
+}
+	
+}
