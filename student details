@@ -57,7 +57,7 @@ func main(){
 		fmt.Println("1.Add")
 		fmt.Println("2.list")
 		fmt.Println("3.search")
-		fmt.Println("delete")
+		fmt.Println("4.delete")
 
 		var choice int
 		fmt.Println("enter the choice:")
