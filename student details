@@ -23,7 +23,7 @@ func addstudent() {
 	studentlist = append(student ,studentlist)
 }
 func liststudent(){
-	for_, s=range student{
+	for _, s=range student{
 		fmt.Println("name:",s.name)
 		fmt.Println("class:",s.class)
 		fmt.Println("section:",s.section)
