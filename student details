@@ -3,8 +3,8 @@
 import "fmt"
 
 type studentlist struct {
-	name    string
-	class   int
+	name string
+	class int
 	section char
 }
 
