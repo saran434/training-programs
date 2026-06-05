@@ -1,83 +1,103 @@
- package main
-
+package main
 import "fmt"
-
-type studentlist struct {
-	name string
-	class int
-	section char
+type Student struct {
+	ID   int
+	Name string
 }
+var studentList []Student
+func addStudent() {
+	var studentID int
+	var studentName string
 
-func studentlist() {
-	var stu1 studentlist
-	stu1.name = "Saran"
-	stu1.class = 12
-	stu1.section = "a"
+	fmt.Print("Enter Student ID: ")
+	fmt.Scan(&studentID)
 
+	fmt.Print("Enter Student Name: ")
+	fmt.Scan(&studentName)
+
+	newStudent := Student{
+		ID:   studentID,
+		Name: studentName,
+	}
+
+	studentList = append(studentList, newStudent)
+
+	fmt.Println("Student added successfully!")
 }
-func addstudent() {
-	var student []studentlist
-	student.name = "Sam"
-	student.class = 11
-	student.section = "b"
-	studentlist = append(student ,studentlist)
-}
-func liststudent(){
-	for _, s=range student{
-		fmt.Println("name:",s.name)
-		fmt.Println("class:",s.class)
-		fmt.Println("section:",s.section)
+func listStudents() {
+	if len(studentList) == 0 {
+		fmt.Println("No students available.")
+		return
+	}
 
+	fmt.Println("\nStudent List:")
+	for _, student := range studentList {
+		fmt.Println("ID:", student.ID, "Name:", student.Name)
 	}
 }
-func searchstudent(){
-	var name string
-	if s.name=name{
-		fmt.Println("name:",s.name)
-		fmt.Println("class:",s.class)
-		fmt.Println("section:",s.section)
-	}
-}
-func deletestudent(){
-	var name string
-	fmt.Println("enter name:")
-	fmt.Scanf(&name)
-	for i,s=range student{
-		if s.name=name{
-			student = append(student[:i],student[i+1:])
-			fmt.Println("student deleted from the list")
+func searchStudent() {
+	var searchID int
+
+	fmt.Print("Enter Student ID to search: ")
+	fmt.Scan(&searchID)
+
+	for _, student := range studentList {
+		if student.ID == searchID {
+			fmt.Println("Student Found:")
+			fmt.Println("ID:", student.ID)
+			fmt.Println("Name:", student.Name)
+			return
 		}
 	}
-		
-	}
 
-func main(){
-	for {
-		
-		fmt.Println("1.Add")
-		fmt.Println("2.list")
-		fmt.Println("3.search")
-		fmt.Println("4.delete")
-
-		var choice int
-		fmt.Println("enter the choice:")
-		fmt.Scanf(&choice)
-
-	
-	switch choice {
-	case 1:
-		addstudent()
-	case 2:
-		liststudent()
-	case 3:
-	    searchstudent()
-	case 4:
-		deletestudent()
-		
-	
-default:
-	fmt.Println("Invalid choice")
-	}
+	fmt.Println("Student not found.")
 }
-	
+func deleteStudent() {
+	var deleteID int
+
+	fmt.Print("Enter Student ID to delete: ")
+	fmt.Scan(&deleteID)
+
+	for index, student := range studentList {
+		if student.ID == deleteID {
+			studentList = append(studentList[:index], studentList[index+1:],studentList[index+2:]...)
+			fmt.Println("Student deleted successfully!")
+			return
+		}
+	}
+
+	fmt.Println("Student not found.")
+}
+
+func main() {
+	for {
+		var choice int
+
+		fmt.Println("1. Add Student")
+		fmt.Println("2. List Students")
+		fmt.Println("3. Search Student")
+		fmt.Println("4. Delete Student")
+
+		fmt.Print("Enter your choice: ")
+		fmt.Scan(&choice)
+
+		switch choice {
+
+		case 1:
+			addStudent()
+
+		case 2:
+			listStudents()
+
+		case 3:
+			searchStudent()
+
+		case 4:
+			deleteStudent()
+			return
+
+		default:
+			fmt.Println("Invalid choice")
+		}
+	}
 }
