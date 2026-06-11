@@ -1,0 +1,129 @@
+package main
+
+import (
+	"errors"
+	"fmt"
+)
+
+type Student struct {
+	ID   int
+	Name string
+}
+
+var studentList []Student
+
+func addStudent(id int, name string) (bool, error) {
+	student := Student{
+		ID:   id,
+		Name: name,
+	}
+
+	studentList = append(studentList, student)
+
+	return true, nil
+}
+
+func searchStudent(id int) (*Student, error) {
+	for _, student := range studentList {
+		if student.ID == id {
+			return &student, nil
+		}
+	}
+
+	return nil, errors.New("student not found")
+}
+
+func deleteStudent(id int) (bool, error) {
+	for index, student := range studentList {
+		if student.ID == id {
+			studentList = append(studentList[:index], studentList[index+1:]...)
+			return true, nil
+		}
+	}
+
+	return false, errors.New("student not found")
+}
+
+func listStudents() []Student {
+	return studentList
+}
+
+func main() {
+	var choice int
+
+	for {
+		fmt.Println("\n1. Add Student")
+		fmt.Println("2. List Students")
+		fmt.Println("3. Search Student")
+		fmt.Println("4. Delete Student")
+
+		fmt.Print("Enter Choice: ")
+		fmt.Scan(&choice)
+
+		switch choice {
+
+		case 1:
+			var id int
+			var name string
+
+			fmt.Print("Enter Student ID: ")
+			fmt.Scan(&id)
+
+			fmt.Print("Enter Student Name: ")
+			fmt.Scan(&name)
+
+			_, err := addStudent(id, name)
+
+			if err != nil {
+				fmt.Println(err)
+			} else {
+				fmt.Println("Student added successfully!")
+			}
+
+		case 2:
+			students := listStudents()
+
+			if len(students) == 0 {
+				fmt.Println("No students available.")
+			}
+
+			for _, student := range students {
+				fmt.Println("ID:", student.ID, "Name:", student.Name)
+			}
+
+		case 3:
+			var id int
+
+			fmt.Print("Enter Student ID: ")
+			fmt.Scan(&id)
+
+			student, err := searchStudent(id)
+
+			if err != nil {
+				fmt.Println(err)
+			} else {
+				fmt.Println("ID:", student.ID)
+				fmt.Println("Name:", student.Name)
+			}
+
+		case 4:
+			var id int
+
+			fmt.Print("Enter Student ID: ")
+			fmt.Scan(&id)
+
+			_, err := deleteStudent(id)
+
+			if err != nil {
+				fmt.Println(err)
+			} else {
+				fmt.Println("Student deleted successfully!")
+			}
+
+			return
+
+		default:
+			fmt.Println("Invalid Choice")
+		}
+	}
+}
