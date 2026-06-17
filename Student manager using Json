@@ -1,0 +1,84 @@
+)
+}
+
+func addStudent(students []Student, id int, name string) []Student {
+	newStudent := Student{
+		ID:   id,
+		Name: name,
+	}
+
+	students = append(students, newStudent)
+
+	return students
+}
+func searchStudent(students []Student, id int) *Student {
+	for i := range students {
+		if students[i].ID == id {
+			return &students[i]
+		}
+	}
+
+	return nil
+}
+func displayStudents(students []Student) {
+	for _, s := range students {
+		fmt.Printf("ID: %d, Name: %s\n", s.ID, s.Name)
+	}
+}
+
+func main() {
+	filename := "students.json"
+
+	students := loadStudents(filename)
+
+	for {
+		fmt.Println("1. Add Student")
+		fmt.Println("2. Search Student")
+		fmt.Println("3. View All Students")
+
+		var choice int
+		fmt.Print("Enter choice: ")
+		fmt.Scan(&choice)
+
+		switch choice {
+
+		case 1:
+			var id int
+			var name string
+
+			fmt.Print("Enter ID: ")
+			fmt.Scan(&id)
+
+			fmt.Print("Enter Name: ")
+			fmt.Scan(&name)
+
+			students = addStudent(students, id, name)
+			saveStudents(filename, students)
+
+			fmt.Println("Student Added")
+
+		case 2:
+			var id int
+
+			fmt.Print("Enter ID: ")
+			fmt.Scan(&id)
+
+			student := searchStudent(students, id)
+
+			if student != nil {
+				fmt.Printf("ID: %d, Name: %s\n",
+					student.ID,
+					student.Name)
+			} else {
+				fmt.Println("Student Not Found")
+			}
+
+		case 3:
+			displayStudents(students)
+			return
+
+		default:
+			fmt.Println("Invalid Choice")
+		}
+	}
+}
