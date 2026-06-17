@@ -1,4 +1,28 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"os"
 )
+
+type Student struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+func loadStudents(filename string) []Student {
+	var students []Student
+
+	data, _ := os.ReadFile(filename)
+	json.Unmarshal(data, &students)
+
+	return students
+}
+
+func saveStudents(filename string, students []Student) {
+	data, _ := json.MarshalIndent(students, "", "  ")
+	os.WriteFile(filename, data, 0644)
 }
 
 func addStudent(students []Student, id int, name string) []Student {
