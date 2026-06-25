@@ -1,0 +1,187 @@
+package student
+
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+)
+
+type Student struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+type StudentService interface {
+	AddStudent(id int, name string) error
+	SearchStudent(id int) (*Student, error)
+	ViewStudents() []Student
+}
+
+type StudentCatalogue struct {
+	Students []Student
+}
+
+func (sc *StudentCatalogue) AddStudent(id int, name string) error {
+
+	if name == "" {
+		return fmt.Errorf("student name cannot be empty")
+	}
+
+	for _, s := range sc.Students {
+		if s.ID == id {
+			return fmt.Errorf("ID number already present")
+		}
+	}
+
+	sc.Students = append(sc.Students, Student{
+		ID:   id,
+		Name: name,
+	})
+
+	return SaveStudents(sc.Students)
+}
+
+func (sc *StudentCatalogue) SearchStudent(id int) (*Student, error) {
+
+	for i := range sc.Students {
+		if sc.Students[i].ID == id {
+			return &sc.Students[i], nil
+		}
+	}
+
+	return nil, fmt.Errorf("student not found")
+}
+
+func (sc *StudentCatalogue) ViewStudents() []Student {
+	return sc.Students
+}
+
+func LoadStudents() ([]Student, error) {
+
+	var students []Student
+
+	data, err := os.ReadFile("students.json")
+
+	if err != nil {
+
+		if os.IsNotExist(err) {
+			return []Student{}, nil
+		}
+
+		return nil, err
+	}
+
+	err = json.Unmarshal(data, &students)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return students, nil
+}
+
+func SaveStudents(students []Student) error {
+
+	data, err := json.MarshalIndent(students, "", "  ")
+
+	if err != nil {
+		return err
+	}
+
+	return os.WriteFile("students.json", data, 0644)
+}
+
+
+MAIN FUNCTION:
+
+package main
+
+import (
+"fmt"
+
+"studentmanager/student"
+)
+
+func main() {
+
+students, err := student.LoadStudents()
+
+if err != nil {
+fmt.Println("Error loading students:", err)
+return
+}
+
+var studentService student.StudentService = &student.StudentCatalogue{
+Students: students,
+}
+
+for {
+
+fmt.Println("1. Add Student")
+fmt.Println("2. Search Student")
+fmt.Println("3. View Students")
+
+var choice int
+
+fmt.Print("Enter Choice: ")
+fmt.Scan(&choice)
+
+switch choice {
+
+case 1:
+
+var id int
+var name string
+
+fmt.Print("Enter Student ID: ")
+fmt.Scan(&id)
+
+fmt.Print("Enter Student Name: ")
+fmt.Scan(&name)
+
+err := studentService.AddStudent(id, name)
+
+if err != nil {
+fmt.Println("Error:", err)
+} else {
+fmt.Println("Student Added Successfully")
+}
+
+case 2:
+
+var id int
+
+fmt.Print("Enter Student ID: ")
+fmt.Scan(&id)
+
+s, err := studentService.SearchStudent(id)
+
+if err != nil {
+fmt.Println("Error:", err)
+} else {
+fmt.Printf("ID: %d, Name: %s\n", s.ID, s.Name)
+}
+
+case 3:
+
+allStudents := studentService.ViewStudents()
+
+if len(allStudents) == 0 {
+fmt.Println("No Students Available")
+continue
+}
+
+for i := range allStudents {
+fmt.Printf(
+"ID: %d, Name: %s\n",
+allStudents[i].ID,
+allStudents[i].Name,
+)
+}
+
+default:
+
+fmt.Println("Invalid Choice")
+}
+}
+}
